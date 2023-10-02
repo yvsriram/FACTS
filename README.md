@@ -12,4 +12,37 @@ Computer vision datasets frequently contain spurious correlations between task-r
 }
 ```
 
-Code coming soon - please stay tuned!
+### Installation instructions
+Create a new conda environment and install requirements using the environment.yml file:
+```
+conda env create -f environment.yml -n facts
+conda activate facts
+```
+
+### Download datasets
+Download `track_1` of the NICO++ dataset from [here](https://www.dropbox.com/sh/u2bq2xo8sbax4pr/AADbhZJAy0AAbap76cg_XkAfa?dl=0) and place it inside `data/NICO` directory.
+
+### Step-1: Amplify Correlations (AmCo)
+To train on $NICO++95$ with high regularization, run:
+```
+python train.py --config-file configs/nico_plus_plus.yaml --data.dataset_name nico_plus_plus_super_95
+```
+This will create `all_outputs.npy` inside `outputs/nico_plus_plus/amco_95/seed_0/`. This file contains model predictions at different points in training.
+
+Now, we select the point at which maximum training accuracy peaks.
+```
+python select_best_point.py --outputs_file outputs/nico_plus_plus/amco_95/seed_0/all_outputs.npy --dataset_name nico_plus_plus_super_95
+```
+
+### Step-2: Correlation-aware Slicing (CoSi)
+```
+python slice.py --outputs_file outputs/nico_plus_plus/amco_95/seed_0/all_outputs.npy --stopping_time 90 --dataset_name nico_plus_plus_super_95
+```
+
+
+This repository uses code from Domino (https://github.com/HazyResearch/domino.git) and JTT (https://github.com/anniesch/jtt).
+
+
+### License
+
+This project is under the CC-BY-NC 4.0 license. See [LICENSE](LICENSE) for details.

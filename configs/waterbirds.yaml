@@ -1,0 +1,21 @@
+data:
+  gpu: 0
+  num_workers: 1
+  train_dataset: /path/to/waterbird_complete95_forest2water2/
+  dataset_name: waterbirds
+  num_classes: 2
+training:
+  arch: resnet50
+  batch_size: 64
+  epochs: 300
+  lr: 1e-5
+  momentum: 0.9
+  weight_decay: 1.0
+  lr_tta: false
+  num_workers: 6
+  save_dir: outputs/nico_plus_plus/
+  eval_freq: -1
+  exp_name: waterbirds
+  pretrained: True
+  n_trials: 1
+  seed: 0
